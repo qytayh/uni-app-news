@@ -4,15 +4,16 @@
 			<!-- 状态栏 -->
 			<view :style="{height: statusBarHeight+'px'}"></view>
 			<!-- 导航栏 -->
-			<view class="navbar-content" :style="{height:navBarHeight+'px'}">
+			<view class="navbar-content" :style="{height:navBarHeight+'px',width:windowWidth+'px'}">
 				<view class="navbar-search">
-					<view class="navbar-search_icon"></view>
+					<view class="navbar-search_icon">
+						<uni-icons type="search" size="16" color="#999"></uni-icons>
+					</view>
 					<view class="navbar-search_text">uni-app,vue</view>
 				</view>
 			</view>
 		</view>
-
-		<view style="height: 45px;"></view>
+		<view :style="{height: statusBarHeight+navBarHeight+'px'}"></view>
 	</view>
 </template>
 
@@ -21,19 +22,23 @@
 		data() {
 			return {
 				statusBarHeight:'',
-				navBarHeight:45
+				navBarHeight:45,
+				windowWidth:375
 			};
 		},
 		created() {
 			//获取手机系统信息
 			const info=uni.getSystemInfoSync()
 			this.statusBarHeight=info.statusBarHeight
+			this.windowWidth=info.windowWidth
+			// #ifndef H5 || APP-PLUS || MP-ALIPAY
+			//以下代码在h5 app 阿里小程序中不起效
 			// 获取胶囊的位置
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect()
 			// (胶囊底部高度-状态栏高度)+(胶囊顶部高度-状态栏内的高度)
-			if(menuButtonInfo){
-				this.navBarHeight = (menuButtonInfo.bottom-info.statusBarHeight)+(menuButtonInfo.top-info.statusBarHeight)
-			}
+			this.navBarHeight = (menuButtonInfo.bottom-info.statusBarHeight)+(menuButtonInfo.top-info.statusBarHeight)
+			this.windowWidth=menuButtonInfo.left
+			//#endif
 		}
 	}
 </script>
@@ -52,7 +57,7 @@
 				display: flex;
 				justify-content: center;
 				align-items: center;
-				padding: 0 15px;
+				padding: 0 10px;
 				// height: 45px;
 				box-sizing: border-box;
 				.navbar-search {
@@ -65,9 +70,6 @@
 					padding: 0 10px;
 
 					.navbar-search_icon {
-						width: 10px;
-						height: 10px;
-						border: 1px red solid;
 						margin-right: 10px;
 					}
 
