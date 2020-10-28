@@ -22,6 +22,15 @@
 				default () {
 					return []
 				}
+			},
+			tabIndex:{
+				type:Number,
+				default:0,
+			}
+		},
+		watch:{
+			tabIndex(newval,oldval){
+				this.activeIndex=newval
 			}
 		},
 		data() {

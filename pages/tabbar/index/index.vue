@@ -1,10 +1,10 @@
 <template>
-	<view class="content">
+	<view class="home">
 		<!-- 自定义导航栏 -->
 		<navbar></navbar>
-		<tab :list='tabList' @tab='tab'></tab>
-		<view v-for="(item,index) in 100" :key="index">
-			{{item}}
+		<tab :list='tabList' @tab='tab' :tabIndex='tabIndex'></tab>
+		<view class="home-list">
+			<list class='list-scroll' :activeIndex="activeIndex" :tab="tabList" @change='change'></list>
 		</view>
 	</view>
 </template>
@@ -14,25 +14,51 @@
 		data() {
 			return {
 				title: 'Hello',
-				tabList:[]
+				tabList: [],
+				tabIndex:0,
+				activeIndex:0
 			}
 		},
 		onLoad() {
 			this.getLabel()
 		},
 		methods: {
-			getLabel(){
-				this.$http({url:'get_label'}).then(res=>{
-					this.tabList=res.data
+			change(e){
+				console.log(e)
+				this.tabIndex=e
+			},
+			getLabel() {
+				this.$http({
+					url: 'get_label'
+				}).then(res => {
+					this.tabList = res.data
 				})
 			},
-			tab({data,index}){
-				console.log({data,index})
+			tab({data,index}) {
+				this.activeIndex=index
 			}
 		}
 	}
 </script>
 
 <style lang="scss">
-	
+	page {
+		height: 100%;
+		display: flex;
+	}
+	.home {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		overflow: hidden;
+		.list-scroll {
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+		}
+		.home-list{
+			flex: 1;
+			box-sizing: border-box;
+		}
+	}
 </style>
