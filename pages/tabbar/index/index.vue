@@ -24,7 +24,6 @@
 		},
 		methods: {
 			change(e){
-				console.log(e)
 				this.tabIndex=e
 			},
 			getLabel() {

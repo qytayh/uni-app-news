@@ -1,67 +1,67 @@
 <template>
 	<view>
 		<!-- 基础卡片 -->
-		<view class="list-card" v-if="mode==='base'">
+		<view class="list-card" v-if="item.mode==='base'">
 			<view class="listcard-image">
-				<image src="../../static/logo.png" mode="aspectFill"></image>
+				<image :src="item.cover[0]" mode="aspectFill"></image>
 			</view>
 			<view class="listcard-content">
 				<view class="listcard-content_title">
-					<text>111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111</text>
+					<text>{{item.title}}</text>
 				</view>
 				<view class="listcard-content_des">
 					<view class="listcard-content_des-label">
 						<view class="listcard-content_des-label-item">
-							前端
+							{{item.classify}}
 						</view>
 					</view>
 					<view class="listcard-content_des-browe">
-						120浏览
+						{{item.browse_count}}人浏览
 					</view>
 				</view>
 			</view>
 
 		</view>
 		<!-- 多图模式 -->
-		<view class="list-card mode-column" v-if="mode==='column'">
+		<view class="list-card mode-column" v-if="item.mode==='column'">
 			<view class="listcard-content">
 				<view class="listcard-content_title">
-					<text>111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111</text>
+					<text>{{item.title}}</text>
 				</view>
 				<view class="listcard-image">
-					<view v-for="(item,index) in 3" :key="index" class="listcard-image_item">
-						<image src="../../static/logo.png" mode="aspectFill"></image>
+					<view v-for="(v,index) in 3" :key="index" class="listcard-image_item">
+						<image :src="item.cover[index]" mode="aspectFill"></image>
 					</view>
 				</view>
 				<view class="listcard-content_des">
 					<view class="listcard-content_des-label">
 						<view class="listcard-content_des-label-item">
-							前端
+							{{item.classify}}
 						</view>
 					</view>
 					<view class="listcard-content_des-browe">
-						120浏览
+						{{item.browse_count}}人浏览
 					</view>
 				</view>
 			</view>
 		</view>
 		<!-- 大图模式 -->
-		<view class="list-card mode-image" v-if="mode==='image'">
+		<view class="list-card mode-image" v-if="item.mode==='image'">
 			<view class="listcard-image">
-				<image src="../../static/logo.png" mode="aspectFill"></image>
+				<image :src="item.cover[0]" mode="aspectFill"></image>
 			</view>
 			<view class="listcard-content">
 				<view class="listcard-content_title">
-					<text>111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111</text>
+					<text>{{item.title}}</text>
 				</view>
 				<view class="listcard-content_des">
 					<view class="listcard-content_des-label">
 						<view class="listcard-content_des-label-item">
-							前端
+							{{item.classify}}
 						</view>
 					</view>
 					<view class="listcard-content_des-browe">
-						120浏览
+						{{item.browse_count}}人浏览
 					</view>
 				</view>
 			</view>
@@ -74,9 +74,11 @@
 <script>
 	export default {
 		props:{
-			mode:{
-				type:String,
-				default:'base'
+			item:{
+				type:Object,
+				default(){
+					return {}
+				}
 			}
 		},
 		data() {
