@@ -1,7 +1,7 @@
 <template>
 	<swiper class="home-swiper" @change="change" :current="activeIndex">
-		<swiper-item class="swiper-item" v-for="(v,i) in tab" :key="index">
-			<list-item :list="list"></list-item>
+		<swiper-item class="swiper-item" v-for="(v,i) in tab" :key="i">
+			<list-item :list="listCatchData[i]"></list-item>
 		</swiper-item>
 	</swiper>
 </template>
@@ -23,24 +23,30 @@
 		},
 		data() {
 			return {
-				list:[]
+				list:[],
+				listCatchData:{}
 			};
 		},
 		methods:{
 			change(e){
-				this.getList(this.tab[e.detail.current].name)
+				this.getList(e.detail.current)
 				this.$emit('change',e.detail.current)
 			},
-			getList(name){
+			getList(current){
 				this.$http({url:'get_list',data:{
-					name
+					name:this.tab[current].name
 				}}).then(res=>{
-					this.list=res.data.data
+					this.$set(this.listCatchData,current,res.data.data)
 				})
 			}
 		},
+		watch:{
+			tab(newval){
+				if(newval.length===0) return
+				this.getList(this.activeIndex)
+			}
+		},
 		created(){
-			this.getList('后端开发')
 		},
 		components:{listItem}
 	}
