@@ -30,6 +30,9 @@
 				this.$http({
 					url: 'get_label'
 				}).then(res => {
+					res.data.unshift({
+						name:"全部"
+					})
 					this.tabList = res.data
 				})
 			},

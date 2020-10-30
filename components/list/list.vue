@@ -1,7 +1,7 @@
 <template>
 	<swiper class="home-swiper" @change="change" :current="activeIndex">
 		<swiper-item class="swiper-item" v-for="(v,i) in tab" :key="i">
-			<list-item :list="listCatchData[i]"></list-item>
+			<list-item :list="listCatchData[i]" @loadmore='loadmore' :load="load[i].loading"></list-item>
 		</swiper-item>
 	</swiper>
 </template>
@@ -24,19 +24,43 @@
 		data() {
 			return {
 				list:[],
-				listCatchData:{}
+				listCatchData:{},
+				load:{},
+				pageSize:5
 			};
 		},
 		methods:{
+			loadmore(){
+				this.load[this.activeIndex].page++
+				this.getList(this.activeIndex)
+			},
 			change(e){
-				this.getList(e.detail.current)
 				this.$emit('change',e.detail.current)
+				if(!this.listCatchData[e.detail.current]||this.listCatchData[e.detail.current].length===0){
+					this.getList(e.detail.current)
+				}
 			},
 			getList(current){
+				if(!this.load[current]){
+					this.load[current]={
+						page:1,
+						loading:'loading'
+					}
+				}
 				this.$http({url:'get_list',data:{
-					name:this.tab[current].name
+					name:this.tab[current].name,
+					page:this.load[current].page,
+					pageSize:this.pageSize
 				}}).then(res=>{
-					this.$set(this.listCatchData,current,res.data.data)
+					console.log(res)
+					if(res.data.length===0){
+						this.$set(this.load[current],'loading','noMore')
+						this.$forceUpdate()//强制页面渲染
+						return
+					}
+					let oldList=this.listCatchData[current]||[]
+					oldList.push(...res.data)
+					this.$set(this.listCatchData,current,oldList)
 				})
 			}
 		},
