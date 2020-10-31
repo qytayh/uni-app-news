@@ -25,6 +25,7 @@
 		methods: {
 			change(e){
 				this.tabIndex=e
+				this.activeIndex=e
 			},
 			getLabel() {
 				this.$http({

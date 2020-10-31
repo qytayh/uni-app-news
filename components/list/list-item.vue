@@ -1,7 +1,7 @@
 <template>
 	<list-scroll class="list-scroll" @loadmore="loadmore">
-		<list-card :item="v" v-for="(v,i) in list" :key="index"></list-card>
-		<uni-load-more iconType="snow" :status="load"></uni-load-more>
+		<list-card :item="v" v-for="(v,i) in list" :key="i"></list-card>
+		<uni-load-more iconType="snow" v-if="list.length==0||list.length>5" :status="load"></uni-load-more>
 	</list-scroll>
 </template>
 

@@ -26,11 +26,12 @@
 				list:[],
 				listCatchData:{},
 				load:{},
-				pageSize:5
+				pageSize:10
 			};
 		},
 		methods:{
 			loadmore(){
+				if(this.load[this.activeIndex].loading=='noMore') return
 				this.load[this.activeIndex].page++
 				this.getList(this.activeIndex)
 			},
@@ -52,7 +53,6 @@
 					page:this.load[current].page,
 					pageSize:this.pageSize
 				}}).then(res=>{
-					console.log(res)
 					if(res.data.length===0){
 						this.$set(this.load[current],'loading','noMore')
 						this.$forceUpdate()//强制页面渲染
